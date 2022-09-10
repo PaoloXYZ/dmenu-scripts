@@ -1,3 +1,5 @@
 #!/bin/sh
 
-udisksctl unmount -b $(lsblk -lp | awk '/part/ {print $1, "(" $4 ")"}' | dmenu -p unmount)
+# extra options remove the possibility to try to unmount not mounted partitions
+# and the primary drive (root directory, home directory and the EFI partition)
+udisksctl unmount -b $(lsblk -lp | awk '/part/ && !/sda/ && $7!="" {print $1, "(" $4 ")"}' | dmenu -p unmount)

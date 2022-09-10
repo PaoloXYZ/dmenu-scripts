@@ -1,4 +1,6 @@
 #!/bin/sh
 
-udisksctl mount -b $(lsblk -lp | awk '/part/ {print $1, "(" $4 ")"}' | dmenu -p mount)
+# extra options remove the possibility to try to mount already mounted partitions 
+# and the primary drive (root directory, home directory and the EFI partition)
+udisksctl mount -b $(lsblk -lp | awk '/part/ && !/sda/ && $7=="" {print $1, "(" $4 ")"}' | dmenu -p mount)
 
